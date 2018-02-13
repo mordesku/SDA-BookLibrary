@@ -9,5 +9,5 @@ import pl.mordesku.sda.spring.hello.entities.User;
  * Time: 19:26
  */
 public interface UserDao {
-    User findByLoginAndPassword(String login, String passowrd);
+    User findByLogin(String login);
 }

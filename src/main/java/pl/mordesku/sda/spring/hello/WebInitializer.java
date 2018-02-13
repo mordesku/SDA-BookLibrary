@@ -5,17 +5,19 @@ import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletRegistration;
 import java.io.File;
 
-
+//tworzymy plik startowy naszej aplikacji webowe odpowiednik web.xml
 public class WebInitializer extends
         AbstractAnnotationConfigDispatcherServletInitializer {
 
     public static final int MAX_FILE_SIZE = 1024 * 1024 * 10;
 
+    //w tej metodzie definiujemy jakie klasy bądź klasa są użyte do konfiguracji kontekstu
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[] { AppJavaConfig.class };
     }
 
+    //definiujemy prefix url dla wszystkich naszych url'i używanych w controllerach
     @Override
     protected String[] getServletMappings() {
         return new String[] { "/" };
@@ -27,6 +29,7 @@ public class WebInitializer extends
     }
 
     @Override
+    //aktywujemy obsługę uploadu plików w postaci multipart z formularzy i nie tylko
     protected void customizeRegistration(ServletRegistration.Dynamic registration) {
 
         File uploadDirectory = new File(AppProperties.FILE_STORE_PATH);

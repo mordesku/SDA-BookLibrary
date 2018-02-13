@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import pl.mordesku.sda.spring.hello.dao.AuthorDao;
 import pl.mordesku.sda.spring.hello.entities.Author;
@@ -11,12 +12,14 @@ import pl.mordesku.sda.spring.hello.entities.Author;
 import javax.transaction.Transactional;
 
 
-@Controller
+@Controller //informujemy dispatcger servlet że jesteśmy kontrolerem i możemy obsługiwac żądania
 public class AuthorCrudController {
-    @Autowired
+    @Autowired //prosimy kontekst o wstrzyknięcie beana typu AuthorDao
     private AuthorDao dao;
 
-    @RequestMapping(value = "/author/add/{name:[A-Za-z0-9 ]+}")
+    //informujemy dispatcher servlet że umiemy obsługiwać requesty pod url'em zdefiniowanym jako value
+    //oraz metodzie GET
+    @RequestMapping(value = "/author/add/{name:[A-Za-z0-9 ]+}", method = RequestMethod.GET)
     public ModelAndView add(@PathVariable("name") String name) {
         ModelAndView bookView = new ModelAndView("author");
         bookView.addObject("name", name);

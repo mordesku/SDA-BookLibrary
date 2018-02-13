@@ -17,11 +17,10 @@ public class UserDaoImpl extends GenericDao implements UserDao {
 
     @Override
     @Transactional
-    public User findByLoginAndPassword(String login, String password) {
+    public User findByLogin(String login) {
         List<User> resultList = currentSession()
-                .createQuery("from User where login = :login and password = :password")
-                .setParameter("login", login)
-                .setParameter("password", password).getResultList();
+                .createQuery("from User as user where user.login = :login")
+                .setParameter("login", login).getResultList();
         if (resultList.size() > 0) {
             return resultList.get(0);
         }

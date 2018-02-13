@@ -18,12 +18,13 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-@Configuration
-@ComponentScan("pl.mordesku.sda.spring.hello")
-@EnableWebMvc
-@EnableWebSecurity
-@EnableTransactionManagement
+@Configuration  // ta adnotacja informuje springa że ma doczynienia z klasą konfigurującą kontekst
+@ComponentScan("pl.mordesku.sda.spring.hello") // tą adnotacją mówimy springowi od jakiego pakieetu począwszy ma skanować w poszukiwaniu adnotowanych klas (@Component, @Repository itp.)
+@EnableWebMvc //uruchamiamy obsługę spring mvc
+@EnableWebSecurity//konfigurujemy wsparcie dla spring security
+@EnableTransactionManagement //właczamy zarządzanie transakcjami
 public class AppJavaConfig extends WebMvcConfigurationSupport {
+    //definiujemy beana
     @Bean
     public InternalResourceViewResolver internalResourceViewResolver() {
         InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
@@ -36,8 +37,8 @@ public class AppJavaConfig extends WebMvcConfigurationSupport {
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(restDataSource());
-        sessionFactory.setPackagesToScan(new String[] { "pl.mordesku.sda.spring.hello.entities" });
-                 sessionFactory.setHibernateProperties(new Properties(){
+        sessionFactory.setPackagesToScan("pl.mordesku.sda.spring.hello.entities");
+        sessionFactory.setHibernateProperties(new Properties(){
               {
                   setProperty("hibernate.hbm2ddl.auto", "update");
                   setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
@@ -51,10 +52,10 @@ public class AppJavaConfig extends WebMvcConfigurationSupport {
     public DataSource restDataSource() {
         SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
         dataSource.setDriverClass(org.postgresql.Driver.class);
-        dataSource.setUrl("jdbc:postgresql://192.168.10.128:5432/kb");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/postgres");
         dataSource.setSchema("public");
-        dataSource.setUsername("mordesku");
-        dataSource.setPassword("haslo.123");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("");
         return dataSource;
     }
 

@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import pl.mordesku.sda.spring.hello.entities.User;
 
 import java.util.ArrayList;
@@ -29,14 +31,14 @@ public class DbAuthenticationManager implements AuthenticationManager {
     public Authentication authenticate(Authentication a) throws AuthenticationException {
         String login = a.getName();
         String credentials = (String)a.getCredentials();
-        User user = userService.loginUser(login, credentials);
+        User user = userService.loginUser(login, credentials == null ? "" : credentials);
         log.info("Attempting to log "+login + " pass "+credentials);
         if (user != null) {
             List<GrantedAuthority> grantedAuths = new ArrayList<>();
             grantedAuths.add(new SimpleGrantedAuthority("ROLE_USER"));
             return new UsernamePasswordAuthenticationToken(login, credentials, grantedAuths);
         }
-        return a;
+        throw new UsernameNotFoundException(String.format("User '%s' not found in database", login));
     }
 
 }

@@ -12,6 +12,8 @@ import java.util.List;
  * Date: 09.02.2018
  * Time: 14:33
  */
+
+//adnotacja definiuje bean repository
 @Repository
 public class AuthorDaoImpl extends GenericDao implements AuthorDao {
     @Override
@@ -21,6 +23,7 @@ public class AuthorDaoImpl extends GenericDao implements AuthorDao {
         return author;
     }
 
+    //adnotacja @Transactional informuje TransactionManager że ma zarządzać transakcją w obrębie tej metody
     @Override
     @Transactional
     public Author load(Long id) {
